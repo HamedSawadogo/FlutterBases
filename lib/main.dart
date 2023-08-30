@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Provider',
         theme: ThemeData(
-          primarySwatch: Colors.green,
+          primarySwatch: Colors.red,
         ),
         home: const HomePage());
   }
@@ -26,7 +26,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  TextEditingController _todoController = TextEditingController();
+  final TextEditingController _todoController = TextEditingController();
 
   List<Map<String, String>> todoData = [];
 
@@ -73,7 +73,14 @@ class _HomePageState extends State<HomePage> {
               final Map<String, String> currentTodo = todoData[index];
               return ListTile(
                 title: Text(currentTodo['todo']!),
-                trailing: Icon(Icons.delete),
+                trailing: IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () {
+                      setState(() {
+                        todoData.removeWhere((element) =>
+                            element["todo"] == currentTodo['todo']);
+                      });
+                    }),
                 subtitle: Text(currentTodo['date']!),
               );
             },

@@ -8,7 +8,7 @@ class MyTodoList extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Provider',
         theme: ThemeData(
-          primarySwatch: Colors.green,
+          primarySwatch: Colors.red,
         ),
         home: const MyTodoListPage());
   }
@@ -25,6 +25,11 @@ class _HomePageState extends State<MyTodoListPage> {
   TextEditingController _todoController = TextEditingController();
 
   List<Map<String, String>> todoData = [];
+
+  @override
+  void dispose() {
+    _todoController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,10 +72,29 @@ class _HomePageState extends State<MyTodoListPage> {
             itemCount: todoData.length,
             itemBuilder: (context, index) {
               final Map<String, String> currentTodo = todoData[index];
-              return ListTile(
-                title: Text(currentTodo['todo']!),
-                trailing: Icon(Icons.delete),
-                subtitle: Text(currentTodo['date']!),
+              return InkWell(
+                onTap: () {
+                  print("Hello");
+                  // todoData.removeWhere(
+                  //     (element) => element == currentTodo['todo']!);
+                },
+                child: ListTile(
+                  title: Text(currentTodo['todo']!),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () {
+                      print("Das ist gut!");
+                    },
+                    // onPressed: () {
+                    //   print("Helllo");
+                    //   // setState(() {
+                    //   //   todoData.removeWhere(
+                    //   //       (element) => element == currentTodo['todo']!);
+                    //   // });
+                    // },
+                  ),
+                  subtitle: Text(currentTodo['date']!),
+                ),
               );
             },
           ),
