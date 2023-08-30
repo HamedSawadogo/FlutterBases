@@ -1,15 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:testbases/models/Book.dart';
-import 'package:testbases/provider/BookProvider.dart';
-import 'package:testbases/widgets/BookDetails.dart';
-import 'package:testbases/widgets/Details.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-    create: (context) => BookProvider(),
-    child: MyApp(),
-  ));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -20,82 +12,86 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Provider',
         theme: ThemeData(
-          primarySwatch: Colors.red,
+          primarySwatch: Colors.green,
         ),
         home: const HomePage());
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  TextEditingController _todoController = TextEditingController();
+
+  List<Map<String, String>> todoData = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Books Page"),
-          actions: [
-            InkWell(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => BookDetail(),
-                ));
-              },
-              child: Stack(
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => BookDetail(),
-                        ));
-                      },
-                      icon: const Icon(Icons.shopping_cart_rounded)),
-                  Positioned(
-                    right: 3,
-                    top: 1,
-                    child: Container(
-                      height: 22,
-                      width: 22,
-                      //color: Colors.amber,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.purple),
-                      child: Center(
-                        child: Text(
-                          Provider.of<BookProvider>(context)
-                              .books
-                              .length
-                              .toString(),
-                          style: TextStyle(fontSize: 15),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+      appBar: AppBar(
+        title: const Text("HommePage"),
+        actions: [
+          IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.search,
+                size: 29,
+              )),
+          const SizedBox(
+            width: 20,
+          ),
+          IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.delete,
+                size: 29,
+              )),
+        ],
+      ),
+      body: Column(children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextFormField(
+            controller: _todoController,
+            decoration: InputDecoration(
+                hintText: "ajouter une tache",
+                suffixIcon: const Icon(Icons.text_decrease),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(40),
+                )),
+          ),
         ),
-        body: ListView.builder(
-          itemCount: Book.books().length,
-          itemBuilder: (context, index) {
-            Book currentBook = Book.books()[index];
-            return ListTile(
-              onTap: () {
-                Provider.of<BookProvider>(context, listen: false)
-                    .addBook(currentBook);
-              },
-              title: Text(
-                currentBook.author,
-                style: const TextStyle(fontSize: 18),
-              ),
-              leading: Image.network(currentBook.imageUrl),
-              trailing: const Icon(
-                Icons.add_shopping_cart,
-                color: Colors.red,
-              ),
-              subtitle: Text(currentBook.date.toString()),
-            );
-          },
-        ));
+        Expanded(
+          child: ListView.builder(
+            itemCount: todoData.length,
+            itemBuilder: (context, index) {
+              final Map<String, String> currentTodo = todoData[index];
+              return ListTile(
+                title: Text(currentTodo['todo']!),
+                trailing: Icon(Icons.delete),
+                subtitle: Text(currentTodo['date']!),
+              );
+            },
+          ),
+        )
+      ]),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Map<String, String> newTask = Map();
+          newTask['todo'] = _todoController.text;
+          newTask['date'] = DateTime.now().toString();
+          setState(() {
+            todoData.add(newTask);
+            _todoController.text = "";
+          });
+        },
+        child: const Icon(Icons.add),
+      ),
+    );
   }
 }
