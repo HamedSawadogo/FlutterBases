@@ -16,16 +16,13 @@ class MyTodoList extends StatelessWidget {
 
 class MyTodoListPage extends StatefulWidget {
   const MyTodoListPage({Key? key}) : super(key: key);
-
   @override
   State<MyTodoListPage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<MyTodoListPage> {
   TextEditingController _todoController = TextEditingController();
-
   List<Map<String, String>> todoData = [];
-
   @override
   void dispose() {
     _todoController.dispose();
@@ -75,8 +72,6 @@ class _HomePageState extends State<MyTodoListPage> {
               return InkWell(
                 onTap: () {
                   print("Hello");
-                  // todoData.removeWhere(
-                  //     (element) => element == currentTodo['todo']!);
                 },
                 child: ListTile(
                   title: Text(currentTodo['todo']!),
@@ -85,13 +80,6 @@ class _HomePageState extends State<MyTodoListPage> {
                     onPressed: () {
                       print("Das ist gut!");
                     },
-                    // onPressed: () {
-                    //   print("Helllo");
-                    //   // setState(() {
-                    //   //   todoData.removeWhere(
-                    //   //       (element) => element == currentTodo['todo']!);
-                    //   // });
-                    // },
                   ),
                   subtitle: Text(currentTodo['date']!),
                 ),
