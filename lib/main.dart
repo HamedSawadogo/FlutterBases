@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:testbases/models/User.dart';
 import 'package:testbases/pages/UserHomePage.dart';
+import 'package:testbases/pages/whatApp/ChatUser.dart';
 
 void main() {
   runApp(MyApp());
@@ -68,7 +69,7 @@ class MyHomePage extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.all(15.0),
                   child: Text(
-                    "WhatApps",
+                    "ViBox",
                     textAlign: TextAlign.start,
                     style: TextStyle(fontSize: 17),
                   ),
@@ -77,12 +78,14 @@ class MyHomePage extends StatelessWidget {
             IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))
           ],
         ),
-        body: TabBarView(children: [
+        body: const TabBarView(children: [
           UsersHomePage(),
           Text("hello"),
           Text("hello"),
           Text("Hello")
         ]),
+        floatingActionButton:
+            FloatingActionButton(onPressed: () {}, child: Icon(Icons.message)),
       ),
     );
   }
