@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:testbases/models/Messages.dart';
 import 'package:testbases/models/User.dart';
+import 'package:testbases/provider/UserMessagesProvider.dart';
 import 'package:testbases/widgets/AvatarImageWidget.dart';
 import '../../widgets/ButtomSendWidget.dart';
 
@@ -21,7 +23,12 @@ class UserChat extends StatelessWidget {
                   const SizedBox(
                     width: 40,
                   ),
-                  AvatarProfilWidget(imageUrl: this.user.avatar_url),
+                  InkWell(
+                      onTap: () {
+                        print("More on Image");
+                      },
+                      child:
+                          AvatarProfilWidget(imageUrl: this.user.avatar_url)),
                   const SizedBox(
                     width: 10,
                   ),
@@ -55,9 +62,10 @@ class UserChat extends StatelessWidget {
           Expanded(
             flex: 9,
             child: ListView.builder(
-              itemCount: Message.messages().length,
+              itemCount: Provider.of<MessagesProvider>(context).messagesSize(),
               itemBuilder: (context, index) {
-                final Message message = Message.messages()[index];
+                final Message message =
+                    Provider.of<MessagesProvider>(context).usermessages[index];
                 return message.status == MessageStatus.received
                     ? Align(
                         alignment: Alignment.bottomRight,
@@ -65,7 +73,7 @@ class UserChat extends StatelessWidget {
                           margin: const EdgeInsets.all(10),
                           height: 40,
                           decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 14, 175, 86),
+                              color: const Color.fromARGB(255, 14, 175, 86),
                               borderRadius: BorderRadius.circular(30)),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -96,7 +104,7 @@ class UserChat extends StatelessWidget {
               },
             ),
           ),
-          Expanded(child: const ButtonSendWidget())
+          const Expanded(child: ButtonSendWidget())
         ],
       ),
     );

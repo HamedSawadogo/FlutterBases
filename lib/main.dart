@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:testbases/models/User.dart';
 import 'package:testbases/pages/UserHomePage.dart';
-import 'package:testbases/pages/whatApp/ChatUser.dart';
+import 'package:testbases/provider/UserMessagesProvider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -13,13 +14,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // BookProvider provider = Provider.of<BookProvider>(context, listen: false);
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Provider',
-        theme: ThemeData(
-          primarySwatch: Colors.green,
-        ),
-        home: const MyHomePage());
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => MessagesProvider(),
+        )
+      ],
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Provider',
+          theme: ThemeData(
+            primarySwatch: Colors.green,
+          ),
+          home: const MyHomePage()),
+    );
   }
 }
 
@@ -40,7 +48,7 @@ class MyHomePage extends StatelessWidget {
                 children: [
                   const Text("CHATS"),
                   Container(
-                    margin: EdgeInsets.only(left: 4),
+                    margin: const EdgeInsets.only(left: 4),
                     height: 16,
                     width: 15,
                     decoration: BoxDecoration(
